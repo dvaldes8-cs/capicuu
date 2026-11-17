@@ -49,8 +49,13 @@ npm run icons
 
 ## Live site
 
-Production: [https://capicuu.com](https://capicuu.com)  
-Also builds to GitHub Pages (`gh-pages` branch) on every push to `main`.
+Production: [https://capicuu.com](https://capicuu.com)
+
+Publish updates:
+
+```bash
+npm run deploy
+```
 
 ### Point `capicuu.com` at GitHub Pages (GoDaddy)
 
