@@ -5,6 +5,8 @@ interface BeforeInstallPromptEvent extends Event {
   userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>;
 }
 
+export type InstallPlatform = 'ios' | 'android' | 'other';
+
 function isStandalone(): boolean {
   if (typeof window === 'undefined') return false;
   const mq = window.matchMedia('(display-mode: standalone)').matches;
@@ -14,9 +16,12 @@ function isStandalone(): boolean {
   return mq || iosStandalone;
 }
 
-function isIos(): boolean {
-  if (typeof navigator === 'undefined') return false;
-  return /iphone|ipad|ipod/i.test(navigator.userAgent);
+function detectPlatform(): InstallPlatform {
+  if (typeof navigator === 'undefined') return 'other';
+  const ua = navigator.userAgent;
+  if (/iphone|ipad|ipod/i.test(ua)) return 'ios';
+  if (/android/i.test(ua)) return 'android';
+  return 'other';
 }
 
 /**
@@ -28,7 +33,7 @@ export function usePwaInstall() {
     null,
   );
   const [installed, setInstalled] = useState(() => isStandalone());
-  const [ios] = useState(() => isIos());
+  const [platform] = useState<InstallPlatform>(() => detectPlatform());
 
   useEffect(() => {
     const onBip = (e: Event) => {
@@ -57,21 +62,22 @@ export function usePwaInstall() {
   const showInstall = !installed;
 
   const promptInstall = useCallback(async (): Promise<
-    'accepted' | 'dismissed' | 'unavailable' | 'ios'
+    'accepted' | 'dismissed' | 'unavailable'
   > => {
     if (installed) return 'accepted';
-    if (ios && !deferred) return 'ios';
     if (!deferred) return 'unavailable';
     await deferred.prompt();
     const { outcome } = await deferred.userChoice;
     setDeferred(null);
     if (outcome === 'accepted') setInstalled(true);
     return outcome;
-  }, [deferred, installed, ios]);
+  }, [deferred, installed]);
 
   return {
     installed,
-    ios,
+    platform,
+    ios: platform === 'ios',
+    android: platform === 'android',
     canPrompt,
     showInstall,
     promptInstall,

@@ -32,11 +32,8 @@ function resolveTheme(theme: 'light' | 'dark' | 'system'): 'light' | 'dark' {
 
 export function BottomNav() {
   const { tab, setTab, dict, data, updatePreferences } = useAppStore();
-  const { installed, ios, promptInstall } = usePwaInstall();
+  const { platform, canPrompt, showInstall, promptInstall } = usePwaInstall();
   const [sheetOpen, setSheetOpen] = useState(false);
-  const [sheetMode, setSheetMode] = useState<
-    'ios' | 'unavailable' | 'installed'
-  >('ios');
   const [activeTheme, setActiveTheme] = useState<'light' | 'dark'>(() =>
     resolveTheme(data.preferences.theme),
   );
@@ -52,22 +49,9 @@ export function BottomNav() {
 
   const isDark = activeTheme === 'dark';
 
-  const onInstall = async () => {
-    if (installed) {
-      setSheetMode('installed');
-      setSheetOpen(true);
-      return;
-    }
+  const onPromptInstall = async () => {
     const outcome = await promptInstall();
-    if (outcome === 'ios') {
-      setSheetMode('ios');
-      setSheetOpen(true);
-      return;
-    }
-    if (outcome === 'unavailable') {
-      setSheetMode(ios ? 'ios' : 'unavailable');
-      setSheetOpen(true);
-    }
+    if (outcome === 'accepted') setSheetOpen(false);
   };
 
   const toggleTheme = () => {
@@ -77,7 +61,13 @@ export function BottomNav() {
   return (
     <>
       <nav className="bottom-nav" aria-label="Capicuu">
-        <div className="bottom-nav__inner bottom-nav__inner--six">
+        <div
+          className={
+            showInstall
+              ? 'bottom-nav__inner bottom-nav__inner--six'
+              : 'bottom-nav__inner bottom-nav__inner--five'
+          }
+        >
           {items.map(({ id, icon: Icon, labelKey }) => (
             <button
               key={id}
@@ -104,22 +94,26 @@ export function BottomNav() {
             )}
             <span>{isDark ? dict.nav.day : dict.nav.night}</span>
           </button>
-          <button
-            type="button"
-            className="bottom-nav__btn"
-            onClick={() => void onInstall()}
-            aria-label={dict.nav.install}
-          >
-            <Download aria-hidden strokeWidth={2.25} />
-            <span>{installed ? dict.nav.installed : dict.nav.install}</span>
-          </button>
+          {showInstall && (
+            <button
+              type="button"
+              className="bottom-nav__btn"
+              onClick={() => setSheetOpen(true)}
+              aria-label={dict.nav.install}
+            >
+              <Download aria-hidden strokeWidth={2.25} />
+              <span>{dict.nav.install}</span>
+            </button>
+          )}
         </div>
       </nav>
 
       <InstallAppSheet
         open={sheetOpen}
         onClose={() => setSheetOpen(false)}
-        mode={sheetMode}
+        platform={platform}
+        canPrompt={canPrompt}
+        onPromptInstall={onPromptInstall}
       />
     </>
   );

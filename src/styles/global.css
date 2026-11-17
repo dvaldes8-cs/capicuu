@@ -154,16 +154,67 @@ a {
   padding: 0 2px;
 }
 
+.install-intro {
+  margin: 0 0 16px;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+.install-platform {
+  padding: 12px 14px;
+  margin-bottom: 12px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  background: var(--bg);
+}
+
+.install-platform--active {
+  border-color: var(--brand);
+  background: color-mix(in srgb, var(--brand) 8%, var(--bg));
+}
+
+.install-platform__title {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 8px;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.install-platform__badge {
+  margin-left: auto;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--brand);
+  color: var(--text-on-brand);
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.install-steps {
+  margin: 0 0 10px;
+  padding-left: 1.2rem;
+  color: var(--text-muted);
+  line-height: 1.45;
+}
+
+.install-steps li + li {
+  margin-top: 6px;
+}
+
 .install-ios-tip {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 12px 14px;
-  margin: 0 0 16px;
-  border-radius: var(--radius-md);
+  padding: 10px 12px;
+  margin: 0;
+  border-radius: var(--radius-sm);
   background: var(--bg-muted);
   border: 1px solid var(--border);
   font-weight: 600;
+  font-size: 0.9rem;
   color: var(--text);
 }
 

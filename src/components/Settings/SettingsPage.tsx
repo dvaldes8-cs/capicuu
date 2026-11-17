@@ -1,5 +1,5 @@
 import { TARGET_SCORE_OPTIONS } from '../../domain/presets';
-import type { Language, RegionalPreset, Theme } from '../../domain/types';
+import type { Language, Theme } from '../../domain/types';
 import { APP_VERSION } from '../../config';
 import { SupportSection } from './SupportSection';
 import { SpecialRulesEditor } from './SpecialRulesEditor';
@@ -68,25 +68,6 @@ export function SettingsPage() {
               onClick={() => updatePreferences({ defaultTargetScore: n })}
             >
               {n}
-            </button>
-          ))}
-        </div>
-      </section>
-
-      <section className="settings-section">
-        <h2>{dict.settings.defaultPreset}</h2>
-        <div className="chip-row" role="group">
-          {(
-            ['puertorriqueno', 'dominicano', 'personalizado'] as RegionalPreset[]
-          ).map((p) => (
-            <button
-              key={p}
-              type="button"
-              className="chip"
-              aria-pressed={prefs.defaultPreset === p}
-              onClick={() => updatePreferences({ defaultPreset: p })}
-            >
-              {dict.newGame.presets[p]}
             </button>
           ))}
         </div>

@@ -18,9 +18,21 @@ export const es = {
     howTitle: 'Instalar Capicuu',
     installedTitle: 'App instalada',
     alreadyInstalled: 'Capicuu ya está instalada en este dispositivo.',
+    intro:
+      'Capicuu se instala gratis desde el navegador. Elige tu teléfono:',
+    thisDevice: 'Tu teléfono',
+    iphoneTitle: 'iPhone / iPad',
+    iphoneStep1: 'Abre Capicuu en Safari (no en Chrome ni Instagram).',
+    iphoneStep2: 'Toca el botón Compartir (cuadrado con flecha hacia arriba).',
+    iphoneStep3: 'Elige “Añadir a pantalla de inicio” y confirma.',
+    iosShareHint: 'El botón Compartir está en la barra de Safari.',
+    androidTitle: 'Android',
+    androidStep1: 'Abre Capicuu en Chrome.',
+    androidStep2: 'Toca el menú ⋮ (tres puntos) arriba a la derecha.',
+    androidStep3: 'Elige “Instalar app” o “Añadir a pantalla de inicio”.',
+    installNow: 'Instalar ahora',
     iosSteps:
       'En iPhone o iPad: toca Compartir en Safari y luego “Añadir a pantalla de inicio”.',
-    iosShareHint: 'Usa el botón Compartir de Safari.',
     manualSteps:
       'Abre el menú del navegador y elige “Instalar app” o “Añadir a la pantalla de inicio”.',
   },
