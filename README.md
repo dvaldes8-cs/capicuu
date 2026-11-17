@@ -34,10 +34,25 @@ npm run preview
 Copy `.env.example` to `.env` and set:
 
 ```
-VITE_BUY_ME_A_COFFEE_URL=https://buymeacoffee.com/yourname
+VITE_BUY_ME_A_COFFEE_URL=https://buymeacoffee.com/capicuu
 ```
 
-If unset, donation buttons stay hidden.
+Defaults to https://buymeacoffee.com/capicuu.
+
+## Visit / install email notices
+
+Capicuu can email you when someone opens the live link (once per day per browser) or installs the app. GitHub Pages is static, so this uses free [Web3Forms](https://web3forms.com):
+
+1. Create a key at https://web3forms.com with `dvaldes8.cs@gmail.com`
+2. Put it in `.env`:
+
+```
+VITE_WEB3FORMS_ACCESS_KEY=your_access_key_here
+```
+
+3. Rebuild and redeploy (`CAPICUU_BASE=/capicuu/ npm run build` then publish `dist`)
+
+Localhost does not send notices.
 
 ## Brand assets
 
