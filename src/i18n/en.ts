@@ -111,14 +111,7 @@ export const en: Dictionary = {
     team2: 'Team 2',
     target: 'Target',
     customTarget: 'Custom',
-    preset: 'Variant',
-    presets: {
-      puertorriqueno: 'Puerto Rican Dominoes',
-      dominicano: 'Dominican Dominoes',
-      personalizado: 'Custom',
-    },
     start: 'Start',
-    cancel: 'Cancel',
     activeWarning:
       'A game is in progress. It will be saved to history before starting another.',
     continueActive: 'Continue current game',
@@ -177,13 +170,10 @@ export const en: Dictionary = {
     theme: 'Theme',
     themes: { light: 'Light', dark: 'Dark', system: 'System' },
     defaultTarget: 'Default target',
-    defaultPreset: 'Default variant',
     specialRules: 'Special bonuses',
     specialRulesHint:
-      'Turning them on loads starter point values. Edit to match your house rules; selecting the play on the scoreboard adds them.',
+      'They start at 0. Set the points to match your house rules; selecting the play on the scoreboard adds them.',
     specialRulesNumbers: 'Bonus points',
-    specialRulesNoGame:
-      'Start a game to configure Dominada, Capicú, and the rest.',
     victorySound: 'Victory music',
     confirmReset: 'Confirm before reset',
     about: 'About',

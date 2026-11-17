@@ -22,13 +22,7 @@ import {
   type NewGameInput,
 } from '../domain/game';
 import { computeScoreSummary } from '../domain/scoring';
-import type {
-  AppData,
-  Game,
-  HandType,
-  Preferences,
-  ScoringRules,
-} from '../domain/types';
+import type { AppData, Game, HandType, Preferences } from '../domain/types';
 import {
   loadAppData,
   saveAppData,
@@ -71,7 +65,6 @@ interface AppStore {
   doRematch: () => void;
   rematchFromId: (gameId: string) => void;
   updatePreferences: (partial: Partial<Preferences>) => void;
-  updateActiveScoringRules: (rules: ScoringRules) => void;
   resetAllData: () => void;
   dismissWinner: () => void;
   winnerDismissed: boolean;
@@ -387,17 +380,6 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
     });
   }, []);
 
-  const updateActiveScoringRules = useCallback(
-    (rules: ScoringRules) => {
-      patchActiveGame((game) => ({
-        ...game,
-        scoringRules: rules,
-        updatedAt: new Date().toISOString(),
-      }));
-    },
-    [patchActiveGame],
-  );
-
   const resetAllData = useCallback(() => {
     const next = ensureActiveGame({
       ...emptyAppData(),
@@ -427,7 +409,6 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
     doRematch,
     rematchFromId,
     updatePreferences,
-    updateActiveScoringRules,
     resetAllData,
     dismissWinner: () => setWinnerDismissed(true),
     winnerDismissed,

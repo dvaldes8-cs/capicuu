@@ -674,6 +674,41 @@
   color: var(--text-muted);
 }
 
+.settings-hint {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.settings-reset {
+  margin-top: 24px;
+}
+
+.about-brand {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.about-brand__meta {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.new-game-warning {
+  margin-top: 0;
+  margin-bottom: 16px;
+}
+
+.new-game-warning p {
+  margin: 0 0 12px;
+}
+
+.field__follow-up {
+  margin-top: 8px;
+}
+
 .settings-row {
   display: flex;
   align-items: center;

@@ -2,95 +2,75 @@ import { TARGET_SCORE_OPTIONS } from '../../domain/presets';
 import type { Language, Theme } from '../../domain/types';
 import { APP_VERSION } from '../../config';
 import { SupportSection } from './SupportSection';
-import { SpecialRulesEditor } from './SpecialRulesEditor';
 import { useAppStore } from '../../hooks/useAppStore';
 import { t } from '../../i18n';
 import { Logo } from '../Brand/Logo';
 
+function ChipGroup<T extends string | number>({
+  label,
+  value,
+  options,
+  getLabel,
+  onChange,
+}: {
+  label: string;
+  value: T;
+  options: readonly T[];
+  getLabel?: (option: T) => string;
+  onChange: (option: T) => void;
+}) {
+  return (
+    <section className="settings-section">
+      <h2>{label}</h2>
+      <div className="chip-row" role="group" aria-label={label}>
+        {options.map((option) => (
+          <button
+            key={String(option)}
+            type="button"
+            className="chip"
+            aria-pressed={value === option}
+            onClick={() => onChange(option)}
+          >
+            {getLabel ? getLabel(option) : option}
+          </button>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 export function SettingsPage() {
-  const {
-    data,
-    dict,
-    activeGame,
-    updatePreferences,
-    updateActiveScoringRules,
-    resetAllData,
-  } = useAppStore();
+  const { data, dict, updatePreferences, resetAllData } = useAppStore();
   const prefs = data.preferences;
 
   return (
     <div>
       <h1 className="page-title">{dict.settings.title}</h1>
 
-      <section className="settings-section">
-        <h2>{dict.settings.language}</h2>
-        <div className="chip-row" role="group" aria-label={dict.settings.language}>
-          {(['es', 'en'] as Language[]).map((lang) => (
-            <button
-              key={lang}
-              type="button"
-              className="chip"
-              aria-pressed={prefs.language === lang}
-              onClick={() => updatePreferences({ language: lang })}
-            >
-              {dict.settings.languages[lang]}
-            </button>
-          ))}
-        </div>
-      </section>
+      <ChipGroup
+        label={dict.settings.language}
+        value={prefs.language}
+        options={['es', 'en'] as const satisfies readonly Language[]}
+        getLabel={(lang) => dict.settings.languages[lang]}
+        onChange={(language) => updatePreferences({ language })}
+      />
 
-      <section className="settings-section">
-        <h2>{dict.settings.theme}</h2>
-        <div className="chip-row" role="group" aria-label={dict.settings.theme}>
-          {(['light', 'dark', 'system'] as Theme[]).map((theme) => (
-            <button
-              key={theme}
-              type="button"
-              className="chip"
-              aria-pressed={prefs.theme === theme}
-              onClick={() => updatePreferences({ theme })}
-            >
-              {dict.settings.themes[theme]}
-            </button>
-          ))}
-        </div>
-      </section>
+      <ChipGroup
+        label={dict.settings.theme}
+        value={prefs.theme}
+        options={['light', 'dark', 'system'] as const satisfies readonly Theme[]}
+        getLabel={(theme) => dict.settings.themes[theme]}
+        onChange={(theme) => updatePreferences({ theme })}
+      />
 
-      <section className="settings-section">
-        <h2>{dict.settings.defaultTarget}</h2>
-        <div className="chip-row" role="group">
-          {TARGET_SCORE_OPTIONS.map((n) => (
-            <button
-              key={n}
-              type="button"
-              className="chip"
-              aria-pressed={prefs.defaultTargetScore === n}
-              onClick={() => updatePreferences({ defaultTargetScore: n })}
-            >
-              {n}
-            </button>
-          ))}
-        </div>
-      </section>
-
-      <section className="settings-section">
-        {activeGame ? (
-          <SpecialRulesEditor
-            rules={activeGame.scoringRules}
-            onChange={updateActiveScoringRules}
-          />
-        ) : (
-          <p
-            style={{
-              color: 'var(--text-muted)',
-              fontSize: '0.9rem',
-              marginTop: 0,
-            }}
-          >
-            {dict.settings.specialRulesNoGame}
-          </p>
-        )}
-      </section>
+      <ChipGroup
+        label={dict.settings.defaultTarget}
+        value={prefs.defaultTargetScore}
+        options={TARGET_SCORE_OPTIONS}
+        onChange={(defaultTargetScore) =>
+          updatePreferences({ defaultTargetScore })
+        }
+      />
 
       <section className="settings-section">
         <div className="settings-row">
@@ -125,26 +105,23 @@ export function SettingsPage() {
 
       <section className="settings-section">
         <h2>{dict.settings.about}</h2>
-        <div style={{ display: 'flex', gap: 12, alignItems: 'center', marginBottom: 12 }}>
+        <div className="about-brand">
           <Logo size={48} />
           <div>
             <strong>Capicuu</strong>
-            <div style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>
+            <div className="about-brand__meta">
               {t(dict, dict.settings.version, { v: APP_VERSION })}
             </div>
           </div>
         </div>
-        <p style={{ color: 'var(--text-muted)', marginTop: 0 }}>
-          {dict.settings.aboutBody}
-        </p>
+        <p className="settings-hint">{dict.settings.aboutBody}</p>
       </section>
 
       <SupportSection />
 
       <button
         type="button"
-        className="btn btn--danger btn--block"
-        style={{ marginTop: 24 }}
+        className="btn btn--danger btn--block settings-reset"
         onClick={() => {
           const ok = prefs.confirmReset
             ? window.confirm(dict.settings.resetConfirm)

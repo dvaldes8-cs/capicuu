@@ -64,7 +64,7 @@ export function createGame(input: NewGameInput = {}): Game {
 }
 
 /**
- * Always keep an active scoreboard game ready (defaults to partida a 200).
+ * Always keep an active scoreboard game ready (defaults to partida a 500).
  * Used on first launch and whenever no active game is selected.
  */
 export function ensureActiveGame(data: AppData): AppData {

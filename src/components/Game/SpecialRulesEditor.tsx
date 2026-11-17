@@ -1,6 +1,4 @@
-import { useEffect, useRef } from 'react';
 import {
-  DEFAULT_BONUS_POINTS,
   disableSpecialBonuses,
   enableSpecialBonuses,
 } from '../../domain/presets';
@@ -16,65 +14,40 @@ type SpecialRulesEditorProps = {
   onChange: (rules: ScoringRules) => void;
 };
 
-/**
- * Special bonuses — fixed point values only (no multipliers).
- * The bonus list stays visible; inputs are disabled while the toggle is off.
- */
+function parsePoints(raw: string): number {
+  const cleaned = raw.replace(/\D/g, '').slice(0, 4);
+  if (cleaned === '') return 0;
+  const value = Math.floor(Number(cleaned));
+  return Number.isFinite(value) ? Math.max(0, value) : 0;
+}
+
+function displayPoints(handType: HandType, rules: ScoringRules): string {
+  const bonus = rules.bonuses.find((b) => b.handType === handType);
+  if (!bonus || bonus.value <= 0) return '';
+  return String(bonus.value);
+}
+
+/** Toggle + editable fixed bonus points for a new game (defaults to 0). */
 export function SpecialRulesEditor({
   rules,
   onChange,
 }: SpecialRulesEditorProps) {
   const { dict } = useAppStore();
-  const healed = useRef(false);
   const enabled = rules.specialBonusesEnabled;
 
-  // Older games may have bonuses on with all zeros — seed defaults once.
-  useEffect(() => {
-    if (healed.current) return;
-    if (!rules.specialBonusesEnabled) return;
-    if (rules.bonuses.some((b) => b.value > 0)) return;
-    healed.current = true;
-    onChange(enableSpecialBonuses(rules));
-  }, [rules, onChange]);
-
-  const toggleEnabled = () => {
-    onChange(
-      rules.specialBonusesEnabled
-        ? disableSpecialBonuses(rules)
-        : enableSpecialBonuses(rules),
-    );
-  };
-
   const setBonusPoints = (handType: HandType, raw: string) => {
-    if (!rules.specialBonusesEnabled) return;
-    const cleaned = raw.replace(/\D/g, '').slice(0, 4);
-    const value = cleaned === '' ? 0 : Math.floor(Number(cleaned));
-    const points = Number.isFinite(value) ? Math.max(0, value) : 0;
-
-    const existing = rules.bonuses.find((b) => b.handType === handType);
+    if (!enabled) return;
+    const points = parsePoints(raw);
     const nextRule = {
       handType,
       mode: points > 0 ? ('fixed' as const) : ('none' as const),
       value: points,
       enabled: points > 0,
     };
-
-    const bonuses = existing
+    const bonuses = rules.bonuses.some((b) => b.handType === handType)
       ? rules.bonuses.map((b) => (b.handType === handType ? nextRule : b))
       : [...rules.bonuses, nextRule];
-
     onChange({ ...rules, bonuses, specialBonusesEnabled: true });
-  };
-
-  const displayValue = (handType: HandType): string => {
-    const bonus = rules.bonuses.find((b) => b.handType === handType);
-    if (bonus && bonus.value > 0) return String(bonus.value);
-    if (!enabled && handType in DEFAULT_BONUS_POINTS) {
-      return String(
-        DEFAULT_BONUS_POINTS[handType as keyof typeof DEFAULT_BONUS_POINTS],
-      );
-    }
-    return '';
   };
 
   return (
@@ -87,12 +60,16 @@ export function SpecialRulesEditor({
           role="switch"
           aria-checked={enabled}
           aria-labelledby="special-label"
-          onClick={toggleEnabled}
+          onClick={() =>
+            onChange(
+              enabled
+                ? disableSpecialBonuses(rules)
+                : enableSpecialBonuses(rules),
+            )
+          }
         />
       </div>
-      <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>
-        {dict.settings.specialRulesHint}
-      </p>
+      <p className="settings-hint">{dict.settings.specialRulesHint}</p>
 
       <div
         className={
@@ -111,7 +88,7 @@ export function SpecialRulesEditor({
               inputMode="numeric"
               pattern="[0-9]*"
               placeholder="0"
-              value={displayValue(handType)}
+              value={displayPoints(handType, rules)}
               disabled={!enabled}
               aria-label={`${dict.hands.types[handType]} ${dict.hands.points}`}
               onChange={(e) => setBonusPoints(handType, e.target.value)}

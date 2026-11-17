@@ -110,14 +110,7 @@ export const es = {
     team2: 'Equipo 2',
     target: 'Meta',
     customTarget: 'Personalizada',
-    preset: 'Variante',
-    presets: {
-      puertorriqueno: 'Dominó Puertorriqueño',
-      dominicano: 'Dominó Dominicano',
-      personalizado: 'Personalizado',
-    },
     start: 'Empezar',
-    cancel: 'Cancelar',
     activeWarning:
       'Hay una partida en curso. Se guardará en el historial antes de empezar otra.',
     continueActive: 'Continuar partida actual',
@@ -176,13 +169,10 @@ export const es = {
     theme: 'Tema',
     themes: { light: 'Claro', dark: 'Oscuro', system: 'Sistema' },
     defaultTarget: 'Meta predeterminada',
-    defaultPreset: 'Variante predeterminada',
     specialRules: 'Bonificaciones especiales',
     specialRulesHint:
-      'Al activarlas se cargan puntos de ejemplo. Cámbialos a tu estilo; al elegir la jugada en el marcador se suman.',
+      'Empiezan en 0. Pon los puntos a tu estilo; al elegir la jugada en el marcador se suman.',
     specialRulesNumbers: 'Puntos de bonificación',
-    specialRulesNoGame:
-      'Empieza una partida para configurar Dominada, Capicú y el resto.',
     victorySound: 'Música al ganar',
     confirmReset: 'Confirmar al reiniciar',
     about: 'Acerca de',

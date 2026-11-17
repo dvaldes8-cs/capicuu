@@ -64,18 +64,19 @@ export function ScoreBoard() {
   const showQuickAdd = !hasConfiguredPills;
 
   const basePoints = amount === '' ? 0 : Number(amount);
-  const quickAddTotal = quickAdds.reduce((sum, n) => sum + n, 0);
-  const bonusPoints =
+  const quickAddTotal = showQuickAdd
+    ? quickAdds.reduce((sum, n) => sum + n, 0)
+    : 0;
+  const specialBonus =
     activeGame && showHandTypes
       ? calculateBonusPointsForTypes(
           basePoints,
           handTypes,
           activeGame.scoringRules,
         )
-      : showQuickAdd
-        ? quickAddTotal
-        : 0;
-  const totalPoints = basePoints + bonusPoints;
+      : 0;
+  /** Keypad base + quick chips; special types add on top when enabled. */
+  const totalPoints = basePoints + quickAddTotal + specialBonus;
   const selectedTypeLabels = handTypes
     .map((type) => dict.hands.types[type])
     .join(' + ');
@@ -92,20 +93,22 @@ export function ScoreBoard() {
       return;
     }
     const base = amount === '' ? 0 : Number(amount);
-    const bonus = showHandTypes
+    const quickTotal = showQuickAdd
+      ? quickAdds.reduce((sum, n) => sum + n, 0)
+      : 0;
+    const special = showHandTypes
       ? calculateBonusPointsForTypes(
           base,
           handTypes,
           activeGame.scoringRules,
         )
-      : showQuickAdd
-        ? quickAdds.reduce((sum, n) => sum + n, 0)
-        : 0;
-    if (base <= 0 && bonus <= 0) {
+      : 0;
+    if (base <= 0 && quickTotal <= 0 && special <= 0) {
       setError(dict.errors.empty);
       return;
     }
-    const points = showHandTypes ? base : base + bonus;
+    // Quick chips fold into base; special hand types add their configured bonus.
+    const points = base + quickTotal;
     const types: HandType[] = showHandTypes ? handTypes : ['normal'];
     const result = awardPoints(selectedTeamId, points, types);
     if (!result.ok) {
@@ -113,7 +116,7 @@ export function ScoreBoard() {
       setError(dict.errors[key] ?? dict.errors.invalid);
       return;
     }
-    const awarded = showHandTypes ? base + bonus : points;
+    const awarded = points + special;
     setAmount('');
     setHandTypes([]);
     setQuickAdds([]);
@@ -155,8 +158,8 @@ export function ScoreBoard() {
     );
   }
 
-  const canAdd =
-    selectedTeamId !== null && (amount !== '' || bonusPoints > 0);
+  const extraPoints = quickAddTotal + specialBonus;
+  const canAdd = selectedTeamId !== null && (amount !== '' || extraPoints > 0);
 
   return (
     <>
@@ -187,28 +190,31 @@ export function ScoreBoard() {
 
       <div className="entry-panel">
         <div className="entry-amount" aria-live="polite">
-          {amount === '' && bonusPoints <= 0 ? (
+          {amount === '' && extraPoints <= 0 ? (
             <span className="entry-amount__hint">
               {dict.scoreboard.selectAmount}
             </span>
           ) : (
             <>
               {amount === '' ? 0 : amount}
-              {bonusPoints > 0 ? (
-                <span className="entry-amount__bonus"> +{bonusPoints}</span>
+              {quickAddTotal + specialBonus > 0 ? (
+                <span className="entry-amount__bonus">
+                  {' '}
+                  +{quickAddTotal + specialBonus}
+                </span>
               ) : null}
             </>
           )}
         </div>
-        {bonusPoints > 0 && (
+        {quickAddTotal + specialBonus > 0 && (
           <p className="entry-hint entry-hint--bonus">
-            {showHandTypes
+            {specialBonus > 0
               ? t(dict, dict.scoreboard.bonusIncluded, {
-                  n: bonusPoints,
+                  n: specialBonus,
                   type: selectedTypeLabels || dict.hands.types.normal,
                 })
               : t(dict, dict.scoreboard.quickAddIncluded, {
-                  n: bonusPoints,
+                  n: quickAddTotal,
                 })}
             {' · '}
             {t(dict, dict.scoreboard.totalPreview, { n: totalPoints })}
@@ -229,7 +235,7 @@ export function ScoreBoard() {
 
         {showHandTypes && (
           <div
-            className="chip-row"
+            className="chip-row chip-row--compact"
             role="group"
             aria-label={dict.scoreboard.handType}
           >
@@ -240,7 +246,7 @@ export function ScoreBoard() {
                 <button
                   key={type}
                   type="button"
-                  className="chip"
+                  className="chip chip--compact"
                   aria-pressed={handTypes.includes(type)}
                   onClick={() => {
                     setHandTypes((prev) => toggleInList(prev, type));

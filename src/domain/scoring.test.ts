@@ -42,16 +42,16 @@ describe('game scoring', () => {
     expect(game.teams).toHaveLength(2);
     expect(game.teams[0].name).toBe('Nosotros');
     expect(game.teams[1].name).toBe('Ellos');
-    expect(game.targetScore).toBe(200);
+    expect(game.targetScore).toBe(500);
     expect(game.status).toBe('active');
     expect(game.hands).toHaveLength(0);
   });
 
-  it('seeds an active 200-point game when none is selected', () => {
+  it('seeds an active 500-point game when none is selected', () => {
     const seeded = ensureActiveGame(emptyAppData());
     expect(seeded.games).toHaveLength(1);
     expect(seeded.activeGameId).toBe(seeded.games[0].id);
-    expect(seeded.games[0].targetScore).toBe(200);
+    expect(seeded.games[0].targetScore).toBe(500);
     expect(seeded.games[0].status).toBe('active');
   });
 
@@ -279,17 +279,12 @@ describe('regional presets', () => {
     }
   });
 
-  it('seeds editable default bonus points when enabling', async () => {
-    const { enableSpecialBonuses, DEFAULT_BONUS_POINTS } = await import(
-      './presets'
-    );
+  it('enables special bonuses at 0 until the user edits them', async () => {
+    const { enableSpecialBonuses } = await import('./presets');
     const rules = enableSpecialBonuses(createScoringRules('dominicano'));
     expect(rules.specialBonusesEnabled).toBe(true);
-    expect(calculateBonusPoints(0, 'capicu', rules)).toBe(
-      DEFAULT_BONUS_POINTS.capicu,
-    );
-    expect(calculateBonusPoints(0, 'pase', rules)).toBe(
-      DEFAULT_BONUS_POINTS.pase,
-    );
+    expect(rules.bonuses.every((b) => b.value === 0)).toBe(true);
+    expect(calculateBonusPoints(0, 'capicu', rules)).toBe(0);
+    expect(calculateBonusPoints(0, 'pase', rules)).toBe(0);
   });
 });

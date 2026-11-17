@@ -487,6 +487,17 @@ a {
   border-color: var(--brand);
 }
 
+.chip--compact {
+  min-height: 32px;
+  padding: 0 10px;
+  font-size: 0.75rem;
+  font-weight: 650;
+}
+
+.chip-row--compact {
+  gap: 6px;
+}
+
 .toast {
   position: fixed;
   left: 50%;

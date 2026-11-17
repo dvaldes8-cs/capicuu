@@ -2,11 +2,12 @@ import { useState } from 'react';
 import { createScoringRules, TARGET_SCORE_OPTIONS } from '../../domain/presets';
 import type { ScoringRules } from '../../domain/types';
 import { useAppStore } from '../../hooks/useAppStore';
-import { SpecialRulesEditor } from '../Settings/SpecialRulesEditor';
+import { SpecialRulesEditor } from './SpecialRulesEditor';
 
 export function NewGamePage() {
   const { dict, data, activeGame, startGame, setTab } = useAppStore();
   const prefs = data.preferences;
+  const preset = prefs.defaultPreset;
 
   const [team1, setTeam1] = useState(prefs.defaultTeamNames[0]);
   const [team2, setTeam2] = useState(prefs.defaultTeamNames[1]);
@@ -18,7 +19,7 @@ export function NewGamePage() {
     ),
   );
   const [rules, setRules] = useState<ScoringRules>(() =>
-    createScoringRules(prefs.defaultPreset),
+    createScoringRules(preset),
   );
 
   const hasActive =
@@ -31,13 +32,13 @@ export function NewGamePage() {
     : target;
 
   const onStart = () => {
-    if (useCustom && (!custom || Number(custom) < 1)) return;
+    if (useCustom && resolvedTarget < 1) return;
     startGame({
       team1Name: team1,
       team2Name: team2,
       targetScore: resolvedTarget,
-      preset: prefs.defaultPreset,
-      scoringRules: { ...rules, preset: prefs.defaultPreset },
+      preset,
+      scoringRules: { ...rules, preset },
     });
   };
 
@@ -46,12 +47,8 @@ export function NewGamePage() {
       <h1 className="page-title">{dict.newGame.title}</h1>
 
       {hasActive && (
-        <div
-          className="support-card"
-          style={{ marginTop: 0, marginBottom: 16 }}
-          role="status"
-        >
-          <p style={{ margin: '0 0 12px' }}>{dict.newGame.activeWarning}</p>
+        <div className="support-card new-game-warning" role="status">
+          <p>{dict.newGame.activeWarning}</p>
           <button
             type="button"
             className="btn btn--secondary btn--block"
@@ -111,10 +108,10 @@ export function NewGamePage() {
         </div>
         {useCustom && (
           <input
-            style={{ marginTop: 8 }}
+            className="field__follow-up"
             inputMode="numeric"
             pattern="[0-9]*"
-            placeholder="200"
+            placeholder="500"
             value={custom}
             onChange={(e) =>
               setCustom(e.target.value.replace(/\D/g, '').slice(0, 5))
