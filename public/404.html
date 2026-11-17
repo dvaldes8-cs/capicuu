@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>404 — Capicuu</title>
+    <meta name="description" content="Esta página no existe en Capicuu." />
+    <meta name="robots" content="noindex, follow" />
+    <meta name="theme-color" content="#123D32" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #f8f5ed;
+        --text: #202825;
+        --muted: #5a655f;
+        --brand: #123d32;
+        --brand-deep: #0d2923;
+        --gold: #d4a956;
+        --ivory: #f8f5ed;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100dvh;
+        display: grid;
+        place-items: center;
+        padding: 24px 20px calc(24px + env(safe-area-inset-bottom, 0px));
+        font-family: Outfit, system-ui, -apple-system, sans-serif;
+        color: var(--text);
+        background:
+          radial-gradient(
+            ellipse 80% 50% at 50% -10%,
+            rgba(212, 169, 86, 0.18),
+            transparent 55%
+          ),
+          radial-gradient(
+            ellipse 60% 40% at 100% 100%,
+            rgba(18, 61, 50, 0.08),
+            transparent 50%
+          ),
+          var(--bg);
+      }
+
+      main {
+        width: min(100%, 420px);
+        text-align: center;
+      }
+
+      .domino {
+        width: 120px;
+        height: auto;
+        margin: 0 auto 28px;
+        display: block;
+        animation: tilt 3.2s ease-in-out infinite;
+        filter: drop-shadow(0 10px 24px rgba(13, 41, 35, 0.18));
+      }
+
+      @keyframes tilt {
+        0%,
+        100% {
+          transform: rotate(-10deg);
+        }
+        50% {
+          transform: rotate(-4deg);
+        }
+      }
+
+      h1 {
+        margin: 0 0 8px;
+        font-size: clamp(2rem, 8vw, 2.75rem);
+        font-weight: 800;
+        letter-spacing: -0.04em;
+        color: var(--brand);
+      }
+
+      p {
+        margin: 0 0 28px;
+        font-size: 1.05rem;
+        font-weight: 500;
+        line-height: 1.45;
+        color: var(--muted);
+      }
+
+      a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 52px;
+        padding: 0 22px;
+        border-radius: 14px;
+        background: var(--brand);
+        color: var(--ivory);
+        font-weight: 700;
+        font-size: 1rem;
+        text-decoration: none;
+        transition: background 0.15s ease, transform 0.12s ease;
+      }
+
+      a:hover {
+        background: var(--brand-deep);
+      }
+
+      a:active {
+        transform: scale(0.97);
+      }
+
+      .brand {
+        margin-top: 28px;
+        font-size: 0.85rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        color: var(--gold);
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <!-- Empty domino: no pips -->
+      <svg
+        class="domino"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 128 128"
+        fill="none"
+        role="img"
+        aria-label="Ficha de dominó vacía"
+      >
+        <g transform="rotate(-12 64 64)">
+          <rect
+            x="28"
+            y="18"
+            width="72"
+            height="92"
+            rx="14"
+            fill="#123D32"
+            stroke="#D4A956"
+            stroke-width="4"
+          />
+          <line
+            x1="28"
+            y1="64"
+            x2="100"
+            y2="64"
+            stroke="#D4A956"
+            stroke-width="3"
+            stroke-linecap="round"
+          />
+        </g>
+      </svg>
+
+      <h1>404</h1>
+      <p>Esta página no existe.<br />Cero puntos. Mano perdida.</p>
+      <a href="/">Volver a Capicuu</a>
+      <div class="brand">Capicuu</div>
+    </main>
+  </body>
+</html>
