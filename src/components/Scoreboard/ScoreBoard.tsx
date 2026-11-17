@@ -6,6 +6,7 @@ import { TeamPanel } from './TeamPanel';
 import { TargetScoreBar } from './TargetScoreBar';
 import { ScanDominosSheet } from './ScanDominosSheet';
 import { HandHistorySheet } from '../Hands/HandHistorySheet';
+import { BottomSheet } from '../ui/BottomSheet';
 import { useActiveSummary, useAppStore } from '../../hooks/useAppStore';
 import {
   NUMERIC_BONUS_HAND_TYPES,
@@ -47,6 +48,7 @@ export function ScoreBoard() {
   const [flashTeam, setFlashTeam] = useState<string | null>(null);
   const [historyOpen, setHistoryOpen] = useState(false);
   const [scanOpen, setScanOpen] = useState(false);
+  const [undoConfirmOpen, setUndoConfirmOpen] = useState(false);
   const [handTypes, setHandTypes] = useState<HandType[]>([]);
   const [quickAdds, setQuickAdds] = useState<number[]>([]);
 
@@ -308,11 +310,7 @@ export function ScoreBoard() {
           <button
             type="button"
             className="btn btn--secondary"
-            onClick={() => {
-              if (!window.confirm(dict.scoreboard.undoConfirm)) return;
-              if (!window.confirm(dict.scoreboard.undoConfirmAgain)) return;
-              undo();
-            }}
+            onClick={() => setUndoConfirmOpen(true)}
             disabled={activeGame.hands.length === 0}
           >
             <Undo2 size={18} aria-hidden />
@@ -328,6 +326,42 @@ export function ScoreBoard() {
           </button>
         </div>
       </div>
+
+      <BottomSheet
+        open={undoConfirmOpen}
+        onClose={() => setUndoConfirmOpen(false)}
+        title={dict.scoreboard.undoConfirmTitle}
+      >
+        <p
+          style={{
+            marginTop: 0,
+            marginBottom: 16,
+            lineHeight: 1.5,
+            color: 'var(--text-muted)',
+          }}
+        >
+          {dict.scoreboard.undoConfirm}
+        </p>
+        <button
+          type="button"
+          className="btn btn--primary btn--block btn--lg"
+          onClick={() => {
+            setUndoConfirmOpen(false);
+            undo();
+          }}
+        >
+          <Undo2 size={20} aria-hidden />
+          {dict.scoreboard.undoConfirmAction}
+        </button>
+        <button
+          type="button"
+          className="btn btn--secondary btn--block"
+          style={{ marginTop: 8 }}
+          onClick={() => setUndoConfirmOpen(false)}
+        >
+          {dict.common.cancel}
+        </button>
+      </BottomSheet>
 
       <HandHistorySheet
         open={historyOpen}
