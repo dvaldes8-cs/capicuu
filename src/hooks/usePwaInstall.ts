@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useState } from 'react';
-import { notifyInstall } from '../analytics/notify';
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
@@ -44,7 +43,6 @@ export function usePwaInstall() {
     const onInstalled = () => {
       setInstalled(true);
       setDeferred(null);
-      notifyInstall();
     };
     window.addEventListener('beforeinstallprompt', onBip);
     window.addEventListener('appinstalled', onInstalled);
