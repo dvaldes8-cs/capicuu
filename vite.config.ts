@@ -3,7 +3,10 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 
-/** Set CAPICUU_BASE=/capicuu/ for GitHub Pages project sites. */
+/**
+ * Production on capicuu.com uses `/`.
+ * Legacy project URL only: CAPICUU_BASE=/capicuu/
+ */
 const base = process.env.CAPICUU_BASE || '/';
 
 export default defineConfig({

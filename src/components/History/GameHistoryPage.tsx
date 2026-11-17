@@ -1,5 +1,4 @@
 import { getTeamTotal } from '../../domain/scoring';
-import { ShareResultButton } from '../Game/ShareResultButton';
 import { SupportSection } from '../Settings/SupportSection';
 import { useAppStore } from '../../hooks/useAppStore';
 import { t } from '../../i18n';
@@ -83,14 +82,6 @@ export function GameHistoryPage() {
                       >
                         {dict.history.rematch}
                       </button>
-                      <ShareResultButton
-                        winnerName={winner ?? ''}
-                        teams={ordered.map((team) => ({
-                          name: team.name,
-                          score: getTeamTotal(game, team.id),
-                        }))}
-                        className="btn btn--secondary"
-                      />
                       <button
                         type="button"
                         className="btn btn--ghost"

@@ -47,6 +47,27 @@ Original SVG logos live in `src/assets/logos/`. Regenerate PNG PWA icons with:
 npm run icons
 ```
 
+## Live site
+
+Production: [https://capicuu.com](https://capicuu.com)  
+Also builds to GitHub Pages (`gh-pages` branch) on every push to `main`.
+
+### Point `capicuu.com` at GitHub Pages (GoDaddy)
+
+In GoDaddy → **DNS** for `capicuu.com`, set:
+
+| Type  | Name | Value                 | TTL  |
+|-------|------|-----------------------|------|
+| A     | `@`  | `185.199.108.153`     | 600  |
+| A     | `@`  | `185.199.109.153`     | 600  |
+| A     | `@`  | `185.199.110.153`     | 600  |
+| A     | `@`  | `185.199.111.153`     | 600  |
+| CNAME | `www`| `dvaldes8-cs.github.io` | 600 |
+
+Delete any old A/AAAA/CNAME/forwarding records for `@` or `www` that point at parking pages.
+
+Then in the repo: **Settings → Pages → Custom domain** → `capicuu.com` → enable **Enforce HTTPS** after DNS checks out (can take a few minutes to a few hours).
+
 ## Stack
 
 React · TypeScript · Vite · LocalStorage · vite-plugin-pwa

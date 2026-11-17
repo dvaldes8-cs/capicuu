@@ -153,10 +153,6 @@ export const es = {
     support: 'Invítame un café',
     muteMusic: 'Silenciar música',
     mutedSaved: 'Música desactivada para próximas victorias',
-    share: 'Compartir resultado',
-    shareText:
-      '¡CAPICUU! ¡Ganó {winner}!\n{scores}\nAnotado con Capicuu — el marcador de dominó.',
-    shareCopied: 'Copiado',
   },
 
   history: {

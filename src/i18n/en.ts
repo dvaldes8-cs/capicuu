@@ -154,10 +154,6 @@ export const en: Dictionary = {
     support: 'Buy me a coffee',
     muteMusic: 'Mute music',
     mutedSaved: 'Music turned off for future wins',
-    share: 'Share result',
-    shareText:
-      '¡CAPICUU! {winner} won!\n{scores}\nScored with Capicuu — the domino scorekeeper.',
-    shareCopied: 'Copied',
   },
 
   history: {
