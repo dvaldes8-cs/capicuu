@@ -7,7 +7,6 @@ import { TargetScoreBar } from './TargetScoreBar';
 import { ScanDominosSheet } from './ScanDominosSheet';
 import { HandHistorySheet } from '../Hands/HandHistorySheet';
 import { useActiveSummary, useAppStore } from '../../hooks/useAppStore';
-import { useVibration } from '../../hooks/useVibration';
 import {
   NUMERIC_BONUS_HAND_TYPES,
   type HandType,
@@ -40,7 +39,6 @@ export function ScoreBoard() {
     storageError,
   } = useAppStore();
   const summary = useActiveSummary();
-  const vibrate = useVibration();
 
   const [amount, setAmount] = useState('');
   const [selectedTeamId, setSelectedTeamId] = useState<string | null>(null);
@@ -120,7 +118,6 @@ export function ScoreBoard() {
     setError(null);
     setFlashTeam(selectedTeamId);
     window.setTimeout(() => setFlashTeam(null), 550);
-    vibrate();
     showToast(
       t(dict, dict.scoreboard.recordedTotal, { n: awarded }),
     );
@@ -134,7 +131,6 @@ export function ScoreBoard() {
     selectedTeamId,
     showHandTypes,
     showQuickAdd,
-    vibrate,
   ]);
 
   if (!activeGame || !summary) {

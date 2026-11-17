@@ -1,6 +1,6 @@
 /** Centralized app configuration */
 
-export const APP_VERSION = '1.0.3';
+export const APP_VERSION = '1.0.4';
 
 /**
  * Buy Me a Coffee creator URL.

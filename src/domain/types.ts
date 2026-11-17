@@ -98,7 +98,6 @@ export interface Preferences {
   defaultPreset: RegionalPreset;
   defaultTeamNames: [string, string];
   confirmReset: boolean;
-  vibrationEnabled: boolean;
   /** Short original victory jingle when a team wins. */
   victorySoundEnabled: boolean;
   schemaVersion: typeof SCHEMA_VERSION;

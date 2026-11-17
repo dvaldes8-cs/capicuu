@@ -13,7 +13,6 @@ export function defaultPreferences(): Preferences {
     defaultPreset: 'puertorriqueno',
     defaultTeamNames: ['Nosotros', 'Ellos'],
     confirmReset: true,
-    vibrationEnabled: true,
     victorySoundEnabled: true,
     schemaVersion: SCHEMA_VERSION,
   };
@@ -68,10 +67,6 @@ export function migrateAppData(raw: unknown): AppData {
       confirmReset:
         typeof prefsRaw.confirmReset === 'boolean'
           ? prefsRaw.confirmReset
-          : true,
-      vibrationEnabled:
-        typeof prefsRaw.vibrationEnabled === 'boolean'
-          ? prefsRaw.vibrationEnabled
           : true,
       victorySoundEnabled:
         typeof prefsRaw.victorySoundEnabled === 'boolean'

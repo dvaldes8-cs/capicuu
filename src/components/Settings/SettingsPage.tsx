@@ -95,19 +95,6 @@ export function SettingsPage() {
 
       <section className="settings-section">
         <div className="settings-row">
-          <label id="vib-label">{dict.settings.vibration}</label>
-          <button
-            type="button"
-            className="toggle"
-            role="switch"
-            aria-checked={prefs.vibrationEnabled}
-            aria-labelledby="vib-label"
-            onClick={() =>
-              updatePreferences({ vibrationEnabled: !prefs.vibrationEnabled })
-            }
-          />
-        </div>
-        <div className="settings-row">
           <label id="victory-sound-label">{dict.settings.victorySound}</label>
           <button
             type="button"

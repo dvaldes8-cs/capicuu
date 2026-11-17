@@ -1,5 +1,6 @@
 import { AppStoreProvider, useAppStore } from './hooks/useAppStore';
 import { BottomNav } from './components/Layout/BottomNav';
+import { InstallProvider } from './components/Layout/InstallContext';
 import { ScoreBoard } from './components/Scoreboard/ScoreBoard';
 import { NewGamePage } from './components/Game/NewGamePage';
 import { GameHistoryPage } from './components/History/GameHistoryPage';
@@ -12,16 +13,18 @@ function AppContent() {
   const { tab } = useAppStore();
 
   return (
-    <div className="app-shell">
-      <main className="app-main">
-        {tab === 'scoreboard' && <ScoreBoard />}
-        {tab === 'new' && <NewGamePage />}
-        {tab === 'history' && <GameHistoryPage />}
-        {tab === 'settings' && <SettingsPage />}
-      </main>
-      <BottomNav />
-      <WinnerModal />
-    </div>
+    <InstallProvider>
+      <div className="app-shell">
+        <main className="app-main">
+          {tab === 'scoreboard' && <ScoreBoard />}
+          {tab === 'new' && <NewGamePage />}
+          {tab === 'history' && <GameHistoryPage />}
+          {tab === 'settings' && <SettingsPage />}
+        </main>
+        <BottomNav />
+        <WinnerModal />
+      </div>
+    </InstallProvider>
   );
 }
 

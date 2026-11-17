@@ -1,4 +1,5 @@
-import { Share, Smartphone } from 'lucide-react';
+import { useState } from 'react';
+import { Check, Copy, Share2, Share, Smartphone } from 'lucide-react';
 import { BottomSheet } from '../ui/BottomSheet';
 import { useAppStore } from '../../hooks/useAppStore';
 import type { InstallPlatform } from '../../hooks/usePwaInstall';
@@ -11,6 +12,13 @@ type InstallAppSheetProps = {
   onPromptInstall: () => Promise<void>;
 };
 
+function appUrl(): string {
+  if (typeof window === 'undefined') return '';
+  const { origin, pathname } = window.location;
+  const path = pathname.endsWith('/') ? pathname : `${pathname}/`;
+  return `${origin}${path}`;
+}
+
 export function InstallAppSheet({
   open,
   onClose,
@@ -19,10 +27,58 @@ export function InstallAppSheet({
   onPromptInstall,
 }: InstallAppSheetProps) {
   const { dict } = useAppStore();
+  const [copied, setCopied] = useState(false);
+  const canNativeShare =
+    typeof navigator !== 'undefined' && typeof navigator.share === 'function';
+
+  const onCopy = async () => {
+    const url = appUrl();
+    try {
+      await navigator.clipboard.writeText(url);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 1600);
+    } catch {
+      window.prompt(dict.install.copyLink, url);
+    }
+  };
+
+  const onShare = async () => {
+    const url = appUrl();
+    try {
+      await navigator.share({
+        title: dict.appName,
+        text: dict.install.shareText,
+        url,
+      });
+    } catch {
+      /* user cancelled or share failed */
+    }
+  };
 
   return (
     <BottomSheet open={open} onClose={onClose} title={dict.install.howTitle}>
       <p className="install-intro">{dict.install.intro}</p>
+
+      <div className="install-share-row">
+        <button
+          type="button"
+          className="btn btn--secondary"
+          onClick={() => void onCopy()}
+        >
+          {copied ? <Check size={18} aria-hidden /> : <Copy size={18} aria-hidden />}
+          {copied ? dict.install.linkCopied : dict.install.copyLink}
+        </button>
+        {canNativeShare && (
+          <button
+            type="button"
+            className="btn btn--secondary"
+            onClick={() => void onShare()}
+          >
+            <Share2 size={18} aria-hidden />
+            {dict.install.shareLink}
+          </button>
+        )}
+      </div>
 
       <section
         className={
