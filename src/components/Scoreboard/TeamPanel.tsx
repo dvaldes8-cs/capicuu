@@ -4,7 +4,6 @@ import { useAppStore } from '../../hooks/useAppStore';
 
 type TeamPanelProps = {
   team: TeamScore;
-  isLead: boolean;
   selected: boolean;
   flash: boolean;
   onSelect: () => void;
@@ -13,7 +12,6 @@ type TeamPanelProps = {
 
 export function TeamPanel({
   team,
-  isLead,
   selected,
   flash,
   onSelect,
@@ -24,7 +22,6 @@ export function TeamPanel({
 
   const className = [
     'team-panel',
-    isLead ? 'team-panel--lead' : '',
     selected ? 'team-panel--selected' : '',
     flash ? 'team-panel--flash' : '',
   ]
@@ -40,11 +37,6 @@ export function TeamPanel({
       aria-pressed={selected}
       aria-label={`${team.name}: ${team.total}. ${remainingLabel}`}
     >
-      {isLead && !selected && (
-        <span className="team-panel__badge" aria-hidden>
-          {dict.scoreboard.leading}
-        </span>
-      )}
       <span className="team-panel__name">{team.name}</span>
       <span className="team-panel__score" aria-live="polite">
         {team.total}

@@ -153,10 +153,6 @@ export function ScoreBoard() {
     );
   }
 
-  const maxScore = Math.max(...summary.teams.map((t) => t.total));
-  const hasLead =
-    summary.teams.filter((t) => t.total === maxScore && maxScore > 0).length ===
-    1;
   const canAdd =
     selectedTeamId !== null && (amount !== '' || bonusPoints > 0);
 
@@ -175,7 +171,6 @@ export function ScoreBoard() {
           <TeamPanel
             key={team.teamId}
             team={team}
-            isLead={hasLead && team.total === maxScore}
             selected={selectedTeamId === team.teamId}
             flash={flashTeam === team.teamId}
             onSelect={() => {
@@ -313,7 +308,11 @@ export function ScoreBoard() {
           <button
             type="button"
             className="btn btn--secondary"
-            onClick={undo}
+            onClick={() => {
+              if (!window.confirm(dict.scoreboard.undoConfirm)) return;
+              if (!window.confirm(dict.scoreboard.undoConfirmAgain)) return;
+              undo();
+            }}
             disabled={activeGame.hands.length === 0}
           >
             <Undo2 size={18} aria-hidden />
