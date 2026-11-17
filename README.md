@@ -57,6 +57,13 @@ Publish updates:
 npm run deploy
 ```
 
+### SEO
+
+`index.html` includes title/description, Open Graph, Twitter cards, and JSON-LD.  
+`robots.txt` and `sitemap.xml` ship with the site.
+
+After DNS + HTTPS work on `capicuu.com`, add the property in [Google Search Console](https://search.google.com/search-console) and submit `https://capicuu.com/sitemap.xml`.
+
 ### Point `capicuu.com` at GitHub Pages (GoDaddy)
 
 In GoDaddy → **DNS** for `capicuu.com`, set:
