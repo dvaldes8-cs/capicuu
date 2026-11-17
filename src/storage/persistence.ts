@@ -1,4 +1,5 @@
 import { SCHEMA_VERSION, type AppData, type Game, type HandType, type Preferences } from '../domain/types';
+import { ensureActiveGame } from '../domain/game';
 import { createScoringRules, DEFAULT_TARGET_SCORE } from '../domain/presets';
 import { normalizeHandTypes } from '../domain/scoring';
 import { DEFAULT_LANGUAGE, normalizeLanguage } from '../i18n/language';
@@ -222,10 +223,24 @@ function sanitizeGame(raw: Record<string, unknown>): Game | null {
 export function loadAppData(): AppData {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return emptyAppData();
-    return migrateAppData(JSON.parse(raw));
+    const base = raw ? migrateAppData(JSON.parse(raw)) : emptyAppData();
+    const seeded = ensureActiveGame(base);
+    if (seeded !== base) {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(seeded));
+      } catch {
+        /* ignore quota on first seed */
+      }
+    }
+    return seeded;
   } catch {
-    return emptyAppData();
+    const seeded = ensureActiveGame(emptyAppData());
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(seeded));
+    } catch {
+      /* ignore */
+    }
+    return seeded;
   }
 }
 

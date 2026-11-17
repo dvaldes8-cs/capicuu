@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   createGame,
   addPoints,
+  ensureActiveGame,
   undoLastHand,
   deleteHand,
   editHand,
@@ -9,6 +10,7 @@ import {
   swapTeamPositions,
   updateTargetScore,
 } from './game';
+import { emptyAppData } from '../storage/persistence';
 import {
   calculateBonusPoints,
   calculateBonusPointsForTypes,
@@ -43,6 +45,14 @@ describe('game scoring', () => {
     expect(game.targetScore).toBe(200);
     expect(game.status).toBe('active');
     expect(game.hands).toHaveLength(0);
+  });
+
+  it('seeds an active 200-point game when none is selected', () => {
+    const seeded = ensureActiveGame(emptyAppData());
+    expect(seeded.games).toHaveLength(1);
+    expect(seeded.activeGameId).toBe(seeded.games[0].id);
+    expect(seeded.games[0].targetScore).toBe(200);
+    expect(seeded.games[0].status).toBe('active');
   });
 
   it('enters points for team A and B and calculates totals', () => {

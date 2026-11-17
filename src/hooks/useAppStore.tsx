@@ -14,6 +14,7 @@ import {
   createGame,
   deleteHand,
   editHand,
+  ensureActiveGame,
   rematch as rematchGame,
   swapTeamPositions,
   undoLastHand,
@@ -398,8 +399,10 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
   );
 
   const resetAllData = useCallback(() => {
-    const next = emptyAppData();
-    next.preferences = defaultPreferences(); // includes Spanish default
+    const next = ensureActiveGame({
+      ...emptyAppData(),
+      preferences: defaultPreferences(),
+    });
     commit(next);
     setTab('scoreboard');
   }, [commit]);

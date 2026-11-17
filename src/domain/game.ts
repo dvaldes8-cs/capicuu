@@ -9,7 +9,16 @@ import {
   recalculateFromHands,
   validatePoints,
 } from './scoring';
-import { SCHEMA_VERSION, type Game, type Hand, type HandType, type RegionalPreset, type ScoringRules, type Team } from './types';
+import {
+  SCHEMA_VERSION,
+  type AppData,
+  type Game,
+  type Hand,
+  type HandType,
+  type RegionalPreset,
+  type ScoringRules,
+  type Team,
+} from './types';
 
 export interface NewGameInput {
   team1Name?: string;
@@ -51,6 +60,38 @@ export function createGame(input: NewGameInput = {}): Game {
     hands: [],
     winnerId: null,
     schemaVersion: SCHEMA_VERSION,
+  };
+}
+
+/**
+ * Always keep an active scoreboard game ready (defaults to partida a 200).
+ * Used on first launch and whenever no active game is selected.
+ */
+export function ensureActiveGame(data: AppData): AppData {
+  if (
+    data.activeGameId &&
+    data.games.some((g) => g.id === data.activeGameId)
+  ) {
+    return data;
+  }
+
+  const existingActive = data.games.find((g) => g.status === 'active');
+  if (existingActive) {
+    return { ...data, activeGameId: existingActive.id };
+  }
+
+  const prefs = data.preferences;
+  const game = createGame({
+    team1Name: prefs.defaultTeamNames[0],
+    team2Name: prefs.defaultTeamNames[1],
+    targetScore: prefs.defaultTargetScore || DEFAULT_TARGET_SCORE,
+    preset: prefs.defaultPreset,
+  });
+
+  return {
+    ...data,
+    games: [game, ...data.games],
+    activeGameId: game.id,
   };
 }
 

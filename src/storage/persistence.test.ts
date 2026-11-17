@@ -32,8 +32,21 @@ describe('persistence', () => {
   it('handles corrupted saved data', () => {
     localStorage.setItem(STORAGE_KEY, '{not-json');
     const data = loadAppData();
-    expect(data.games).toEqual([]);
+    expect(data.games).toHaveLength(1);
+    expect(data.activeGameId).toBe(data.games[0].id);
+    expect(data.games[0].targetScore).toBe(200);
     expect(data.preferences.language).toBe('es');
+  });
+
+  it('seeds a default scoreboard game on first launch', () => {
+    const data = loadAppData();
+    expect(data.games).toHaveLength(1);
+    expect(data.activeGameId).toBe(data.games[0].id);
+    expect(data.games[0].targetScore).toBe(200);
+    expect(data.games[0].teams.map((t) => t.name)).toEqual([
+      'Nosotros',
+      'Ellos',
+    ]);
   });
 
   it('defaults language to Spanish', () => {
