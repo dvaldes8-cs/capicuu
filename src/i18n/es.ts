@@ -182,7 +182,6 @@ export const es = {
     specialRulesNoGame:
       'Empieza una partida para configurar Dominada, Capicú y el resto.',
     victorySound: 'Música al ganar',
-    victorySoundHint: 'Jingle corto original al estilo caribeño (no es una canción con copyright).',
     confirmReset: 'Confirmar al reiniciar',
     about: 'Acerca de',
     aboutBody:

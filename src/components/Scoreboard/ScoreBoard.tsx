@@ -236,17 +236,6 @@ export function ScoreBoard() {
             role="group"
             aria-label={dict.scoreboard.handType}
           >
-            <button
-              type="button"
-              className="chip"
-              aria-pressed={handTypes.length === 0}
-              onClick={() => {
-                setHandTypes([]);
-                setError(null);
-              }}
-            >
-              {dict.hands.types.normal}
-            </button>
             {NUMERIC_BONUS_HAND_TYPES.map((type) => {
               const chipBonus = configuredBonus(type);
               if (chipBonus <= 0) return null;

@@ -109,15 +109,6 @@ export function SettingsPage() {
             }
           />
         </div>
-        <p
-          style={{
-            color: 'var(--text-muted)',
-            fontSize: '0.85rem',
-            margin: '0 0 8px',
-          }}
-        >
-          {dict.settings.victorySoundHint}
-        </p>
         <div className="settings-row">
           <label id="confirm-label">{dict.settings.confirmReset}</label>
           <button

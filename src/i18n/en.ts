@@ -183,7 +183,6 @@ export const en: Dictionary = {
     specialRulesNoGame:
       'Start a game to configure Dominada, Capicú, and the rest.',
     victorySound: 'Victory music',
-    victorySoundHint: 'Short original Caribbean-style jingle (not a copyrighted song).',
     confirmReset: 'Confirm before reset',
     about: 'About',
     aboutBody:

@@ -169,14 +169,6 @@ export function HandHistorySheet({ open, onClose }: HandHistorySheetProps) {
                   role="group"
                   aria-label={dict.scoreboard.handType}
                 >
-                  <button
-                    type="button"
-                    className="chip"
-                    aria-pressed={editTypes.length === 0}
-                    onClick={() => setEditTypes([])}
-                  >
-                    {dict.hands.types.normal}
-                  </button>
                   {NUMERIC_BONUS_HAND_TYPES.map((type) => (
                     <button
                       key={type}
