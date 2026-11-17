@@ -11,6 +11,7 @@ import {
   stopVictoryJingle,
 } from '../../audio/victoryJingle';
 import { WinnerCelebration } from './WinnerCelebration';
+import { ShareResultButton } from './ShareResultButton';
 
 export function WinnerModal() {
   const {
@@ -104,9 +105,16 @@ export function WinnerModal() {
           >
             {dict.winner.rematch}
           </button>
+          <ShareResultButton
+            winnerName={winner?.name ?? ''}
+            teams={summary.teams.map((team) => ({
+              name: team.name,
+              score: team.total,
+            }))}
+          />
           <button
             type="button"
-            className="btn btn--secondary btn--block"
+            className="btn btn--ghost btn--block"
             onClick={dismissWinner}
           >
             {dict.winner.viewResults}

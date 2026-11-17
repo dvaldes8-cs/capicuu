@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { createScoringRules, TARGET_SCORE_OPTIONS } from '../../domain/presets';
-import type { RegionalPreset, ScoringRules } from '../../domain/types';
+import type { ScoringRules } from '../../domain/types';
 import { useAppStore } from '../../hooks/useAppStore';
 import { SpecialRulesEditor } from '../Settings/SpecialRulesEditor';
 
@@ -17,7 +17,6 @@ export function NewGamePage() {
       prefs.defaultTargetScore as (typeof TARGET_SCORE_OPTIONS)[number],
     ),
   );
-  const [preset, setPreset] = useState<RegionalPreset>(prefs.defaultPreset);
   const [rules, setRules] = useState<ScoringRules>(() =>
     createScoringRules(prefs.defaultPreset),
   );
@@ -31,23 +30,14 @@ export function NewGamePage() {
     ? Math.max(1, Math.floor(Number(custom) || 0))
     : target;
 
-  const onPreset = (p: RegionalPreset) => {
-    setPreset(p);
-    setRules((prev) => ({
-      ...createScoringRules(p),
-      specialBonusesEnabled: prev.specialBonusesEnabled,
-      bonuses: prev.specialBonusesEnabled ? prev.bonuses : createScoringRules(p).bonuses,
-    }));
-  };
-
   const onStart = () => {
     if (useCustom && (!custom || Number(custom) < 1)) return;
     startGame({
       team1Name: team1,
       team2Name: team2,
       targetScore: resolvedTarget,
-      preset,
-      scoringRules: { ...rules, preset },
+      preset: prefs.defaultPreset,
+      scoringRules: { ...rules, preset: prefs.defaultPreset },
     });
   };
 
@@ -132,29 +122,6 @@ export function NewGamePage() {
             aria-label={dict.newGame.customTarget}
           />
         )}
-      </div>
-
-      <div className="field">
-        <span id="preset-label">{dict.newGame.preset}</span>
-        <div className="chip-row" role="group" aria-labelledby="preset-label">
-          {(
-            [
-              'puertorriqueno',
-              'dominicano',
-              'personalizado',
-            ] as RegionalPreset[]
-          ).map((p) => (
-            <button
-              key={p}
-              type="button"
-              className="chip"
-              aria-pressed={preset === p}
-              onClick={() => onPreset(p)}
-            >
-              {dict.newGame.presets[p]}
-            </button>
-          ))}
-        </div>
       </div>
 
       <section className="settings-section">

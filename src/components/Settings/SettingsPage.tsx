@@ -74,7 +74,6 @@ export function SettingsPage() {
       </section>
 
       <section className="settings-section">
-        <h2>{dict.settings.specialRules}</h2>
         {activeGame ? (
           <SpecialRulesEditor
             rules={activeGame.scoringRules}

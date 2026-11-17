@@ -651,6 +651,17 @@
   text-align: center;
 }
 
+.bonus-numbers--disabled {
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+.bonus-numbers--disabled input:disabled {
+  color: var(--text);
+  opacity: 1;
+  -webkit-text-fill-color: var(--text);
+}
+
 .settings-section {
   margin-bottom: 28px;
 }
