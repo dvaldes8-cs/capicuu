@@ -107,13 +107,6 @@ export function WinnerModal() {
           <button
             type="button"
             className="btn btn--secondary btn--block"
-            onClick={dismissWinner}
-          >
-            {dict.winner.viewResults}
-          </button>
-          <button
-            type="button"
-            className="btn btn--ghost btn--block"
             onClick={() => {
               dismissWinner();
               setTab('new');
