@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Camera, History, Plus, Undo2 } from 'lucide-react';
 import { Logo } from '../Brand/Logo';
 import { Keypad } from './Keypad';
@@ -51,6 +51,14 @@ export function ScoreBoard() {
   const [undoConfirmOpen, setUndoConfirmOpen] = useState(false);
   const [handTypes, setHandTypes] = useState<HandType[]>([]);
   const [quickAdds, setQuickAdds] = useState<number[]>([]);
+
+  useEffect(() => {
+    if (!activeGame) {
+      setSelectedTeamId(null);
+      return;
+    }
+    setSelectedTeamId(activeGame.teams[0]?.id ?? null);
+  }, [activeGame?.id]);
 
   const configuredBonus = (type: HandType): number => {
     if (!activeGame || type === 'normal') return 0;
